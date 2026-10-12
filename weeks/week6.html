@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 6 · Distribution, Adoption &amp; Framework — AI Adoption Designs</title>
+  <meta name="description" content="Marketplaces, non-technical contributors, rollout, operating model, and a framework tying the program together.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-row">
+      <a class="brand" href="../index.html"><span class="prompt">~/</span>ai-adoption-designs</a>
+      <div class="header-spacer"></div>
+      <button class="theme-toggle" type="button" data-theme-toggle>[ light mode ]</button>
+    </div>
+    <nav class="week-nav" aria-label="Weeks">
+      <a href="../index.html">Home</a>
+      <a href="week1.html">Week 1 · Foundations</a>
+      <a href="week2.html">Week 2 · Best Practices</a>
+      <a href="week3.html">Week 3 · Token Efficiency</a>
+      <a href="week4.html">Week 4 · Evals</a>
+      <a href="week5.html">Week 5 · Governance</a>
+      <a href="week6.html" class="active">Week 6 · Distribution</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="week-label">// week 06</p>
+      <h1>Distribution, Adoption &amp; Framework</h1>
+      <p class="page-dek">
+        Marketplaces, reaching non-technical contributors, rollout strategy, operating model,
+        and a single framework tying the previous five weeks together.
+      </p>
+    </section>
+
+    <div class="subtabs" role="tablist" aria-label="Week 6 sections" data-tabs="#week6-panels">
+      <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
+      <button class="tab-btn" role="tab" id="tab-marketplaces" data-tab="panel-marketplaces" aria-selected="false" aria-controls="panel-marketplaces">Marketplaces &amp; Adoption</button>
+      <button class="tab-btn" role="tab" id="tab-operating" data-tab="panel-operating" aria-selected="false" aria-controls="panel-operating">Operating Model</button>
+      <button class="tab-btn" role="tab" id="tab-framework" data-tab="panel-framework" aria-selected="false" aria-controls="panel-framework">The Framework</button>
+      <button class="tab-btn" role="tab" id="tab-notes" data-tab="panel-notes" aria-selected="false" aria-controls="panel-notes">Notes</button>
+    </div>
+
+    <div id="week6-panels">
+
+      <section class="tab-panel" id="panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
+        <h2>Overview</h2>
+        <p class="placeholder">
+          Placeholder — why building the thing is the easy part, and distribution/adoption is
+          where most AI initiatives actually stall.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-marketplaces" role="tabpanel" tabindex="0" aria-labelledby="tab-marketplaces" hidden>
+        <h2>Marketplaces &amp; Adoption</h2>
+        <p class="placeholder">Placeholder — internal marketplace design, discoverability, vetting/review process, enabling non-technical contributors to publish.</p>
+      </section>
+
+      <section class="tab-panel" id="panel-operating" role="tabpanel" tabindex="0" aria-labelledby="tab-operating" hidden>
+        <h2>Operating Model</h2>
+        <p class="placeholder">Placeholder — who owns what (platform team vs. domain teams), support model, versioning and deprecation.</p>
+      </section>
+
+      <section class="tab-panel" id="panel-framework" role="tabpanel" tabindex="0" aria-labelledby="tab-framework" hidden>
+        <h2>The Framework</h2>
+        <p class="placeholder">
+          Placeholder — the single framework that ties weeks 1–5 together: architecture choices,
+          best-practice patterns, efficiency, evals, and governance as stages of one adoption
+          lifecycle. Diagram to come once the shape is clear.
+        </p>
+        <figure class="diagram">
+          <svg viewBox="0 0 640 140" role="img" aria-labelledby="framework-diagram-title">
+            <title id="framework-diagram-title">Placeholder framework: five stages feeding one adoption lifecycle</title>
+            <style>
+              .fnode rect { fill: var(--bg-raised); stroke: var(--border); stroke-width: 1; }
+              .fnode text { fill: var(--text-dim); font-family: var(--mono); font-size: 11px; text-anchor: middle; }
+              .fedge { stroke: var(--text-faint); stroke-width: 1.2; fill: none; marker-end: url(#farrow); }
+            </style>
+            <defs>
+              <marker id="farrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L7,3 L0,6 Z" fill="var(--text-faint)"></path>
+              </marker>
+            </defs>
+            <g class="fnode"><rect x="10" y="45" width="100" height="40" rx="6"></rect><text x="60" y="69">Architecture</text></g>
+            <g class="fnode"><rect x="135" y="45" width="100" height="40" rx="6"></rect><text x="185" y="69">Practices</text></g>
+            <g class="fnode"><rect x="260" y="45" width="100" height="40" rx="6"></rect><text x="310" y="69">Efficiency</text></g>
+            <g class="fnode"><rect x="385" y="45" width="100" height="40" rx="6"></rect><text x="435" y="69">Evals</text></g>
+            <g class="fnode"><rect x="510" y="45" width="110" height="40" rx="6"></rect><text x="565" y="69">Governance</text></g>
+            <path class="fedge" d="M110,65 L135,65"></path>
+            <path class="fedge" d="M235,65 L260,65"></path>
+            <path class="fedge" d="M360,65 L385,65"></path>
+            <path class="fedge" d="M485,65 L510,65"></path>
+          </svg>
+          <figcaption>Placeholder sequence — will likely become a loop rather than a line once the framework is drafted.</figcaption>
+        </figure>
+      </section>
+
+      <section class="tab-panel" id="panel-notes" role="tabpanel" tabindex="0" aria-labelledby="tab-notes" hidden>
+        <h2>Running notes</h2>
+        <p class="placeholder">Placeholder — day-by-day notes go here.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Week 6 of 6 · Distribution, Adoption &amp; Framework</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

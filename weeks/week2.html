@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 2 · Best Practices — AI Adoption Designs</title>
+  <meta name="description" content="Design patterns for shared skills, agents, and plugins that work well for many users.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-row">
+      <a class="brand" href="../index.html"><span class="prompt">~/</span>ai-adoption-designs</a>
+      <div class="header-spacer"></div>
+      <button class="theme-toggle" type="button" data-theme-toggle>[ light mode ]</button>
+    </div>
+    <nav class="week-nav" aria-label="Weeks">
+      <a href="../index.html">Home</a>
+      <a href="week1.html">Week 1 · Foundations</a>
+      <a href="week2.html" class="active">Week 2 · Best Practices</a>
+      <a href="week3.html">Week 3 · Token Efficiency</a>
+      <a href="week4.html">Week 4 · Evals</a>
+      <a href="week5.html">Week 5 · Governance</a>
+      <a href="week6.html">Week 6 · Distribution</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="week-label">// week 02</p>
+      <h1>Best Practices</h1>
+      <p class="page-dek">
+        Design patterns for shared skills, agents, and plugins that hold up across many users —
+        not just the one workflow they were written for.
+      </p>
+    </section>
+
+    <div class="subtabs" role="tablist" aria-label="Week 2 sections" data-tabs="#week2-panels">
+      <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
+      <button class="tab-btn" role="tab" id="tab-patterns" data-tab="panel-patterns" aria-selected="false" aria-controls="panel-patterns">Design Patterns</button>
+      <button class="tab-btn" role="tab" id="tab-examples" data-tab="panel-examples" aria-selected="false" aria-controls="panel-examples">Examples</button>
+      <button class="tab-btn" role="tab" id="tab-notes" data-tab="panel-notes" aria-selected="false" aria-controls="panel-notes">Notes</button>
+    </div>
+
+    <div id="week2-panels">
+
+      <section class="tab-panel" id="panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
+        <h2>Overview</h2>
+        <p class="placeholder">
+          Placeholder — why "works on my machine" prompts and skills don't survive contact with
+          a second user, and what this week's patterns are trying to fix.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-patterns" role="tabpanel" tabindex="0" aria-labelledby="tab-patterns" hidden>
+        <h2>Design Patterns</h2>
+        <p class="placeholder">Placeholder — patterns to fill in as they're learned, e.g.:</p>
+        <table>
+          <thead><tr><th>Pattern</th><th>Problem it solves</th></tr></thead>
+          <tbody>
+            <tr><td>Progressive disclosure</td><td>Don't load every instruction up front — reveal detail on demand</td></tr>
+            <tr><td>Narrow tool scopes</td><td>Smaller surface area is easier to reason about and audit</td></tr>
+            <tr><td>Idempotent actions</td><td>Safe to retry when a step is ambiguous or partially failed</td></tr>
+            <tr><td>Explicit examples over rules</td><td>Models generalize from examples better than from abstract policy</td></tr>
+          </tbody>
+        </table>
+        <div class="callout warn">
+          <p><strong>Open question:</strong> how much should a shared skill assume about the
+          calling agent's permissions versus checking them itself?</p>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-examples" role="tabpanel" tabindex="0" aria-labelledby="tab-examples" hidden>
+        <h2>Examples</h2>
+        <p class="placeholder">Placeholder — a real skill/plugin snippet with annotations will go here.</p>
+        <div class="code-block">
+          <div class="code-head">
+            <span class="code-lang">yaml</span>
+            <button class="copy-btn" type="button">copy</button>
+          </div>
+          <pre><code><span class="tok-com"># placeholder skill manifest</span>
+<span class="tok-kw">name</span>: example-skill
+<span class="tok-kw">description</span>: <span class="tok-str">"One-line trigger condition goes here"</span>
+<span class="tok-kw">scope</span>: read-only</code></pre>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-notes" role="tabpanel" tabindex="0" aria-labelledby="tab-notes" hidden>
+        <h2>Running notes</h2>
+        <p class="placeholder">Placeholder — day-by-day notes go here.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Week 2 of 6 · Best Practices</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

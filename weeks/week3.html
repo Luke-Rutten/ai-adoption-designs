@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 3 · Token Efficiency — AI Adoption Designs</title>
+  <meta name="description" content="Getting great results at lower cost: context budgeting, caching, and model selection.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-row">
+      <a class="brand" href="../index.html"><span class="prompt">~/</span>ai-adoption-designs</a>
+      <div class="header-spacer"></div>
+      <button class="theme-toggle" type="button" data-theme-toggle>[ light mode ]</button>
+    </div>
+    <nav class="week-nav" aria-label="Weeks">
+      <a href="../index.html">Home</a>
+      <a href="week1.html">Week 1 · Foundations</a>
+      <a href="week2.html">Week 2 · Best Practices</a>
+      <a href="week3.html" class="active">Week 3 · Token Efficiency</a>
+      <a href="week4.html">Week 4 · Evals</a>
+      <a href="week5.html">Week 5 · Governance</a>
+      <a href="week6.html">Week 6 · Distribution</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="week-label">// week 03</p>
+      <h1>Token Efficiency</h1>
+      <p class="page-dek">
+        Getting great results at lower cost — context budgeting, prompt caching, model selection,
+        and measuring the tradeoffs between quality, latency, and spend.
+      </p>
+    </section>
+
+    <div class="subtabs" role="tablist" aria-label="Week 3 sections" data-tabs="#week3-panels">
+      <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
+      <button class="tab-btn" role="tab" id="tab-techniques" data-tab="panel-techniques" aria-selected="false" aria-controls="panel-techniques">Techniques</button>
+      <button class="tab-btn" role="tab" id="tab-costmath" data-tab="panel-costmath" aria-selected="false" aria-controls="panel-costmath">Cost Math</button>
+      <button class="tab-btn" role="tab" id="tab-notes" data-tab="panel-notes" aria-selected="false" aria-controls="panel-notes">Notes</button>
+    </div>
+
+    <div id="week3-panels">
+
+      <section class="tab-panel" id="panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
+        <h2>Overview</h2>
+        <p class="placeholder">
+          Placeholder — why token efficiency is a design constraint, not an afterthought, once a
+          system runs at real usage volume.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-techniques" role="tabpanel" tabindex="0" aria-labelledby="tab-techniques" hidden>
+        <h2>Techniques</h2>
+        <table>
+          <thead><tr><th>Technique</th><th>Lever</th></tr></thead>
+          <tbody>
+            <tr><td>Prompt caching</td><td>Reuse unchanged context across calls</td></tr>
+            <tr><td>Right-sized model routing</td><td>Cheap model for easy steps, strong model for hard ones</td></tr>
+            <tr><td>Progressive disclosure in skills</td><td>Only load detail when the task needs it</td></tr>
+            <tr><td>Summarization / compaction</td><td>Compress history instead of carrying it verbatim</td></tr>
+          </tbody>
+        </table>
+        <p class="placeholder">Placeholder — elaborate each technique with real examples once learned.</p>
+      </section>
+
+      <section class="tab-panel" id="panel-costmath" role="tabpanel" tabindex="0" aria-labelledby="tab-costmath" hidden>
+        <h2>Cost Math</h2>
+        <p class="placeholder">Placeholder — worked example comparing cost of a naive vs. optimized approach.</p>
+        <div class="terminal">
+          <div class="line">echo "cost = (input_tokens + output_tokens) * rate"</div>
+          <div class="out">placeholder — swap in a real before/after calculation</div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-notes" role="tabpanel" tabindex="0" aria-labelledby="tab-notes" hidden>
+        <h2>Running notes</h2>
+        <p class="placeholder">Placeholder — day-by-day notes go here.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Week 3 of 6 · Token Efficiency</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

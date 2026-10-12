@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 5 · Governance — AI Adoption Designs</title>
+  <meta name="description" content="Security, permissions, risk, privacy, and oversight of AI behavior.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-row">
+      <a class="brand" href="../index.html"><span class="prompt">~/</span>ai-adoption-designs</a>
+      <div class="header-spacer"></div>
+      <button class="theme-toggle" type="button" data-theme-toggle>[ light mode ]</button>
+    </div>
+    <nav class="week-nav" aria-label="Weeks">
+      <a href="../index.html">Home</a>
+      <a href="week1.html">Week 1 · Foundations</a>
+      <a href="week2.html">Week 2 · Best Practices</a>
+      <a href="week3.html">Week 3 · Token Efficiency</a>
+      <a href="week4.html">Week 4 · Evals</a>
+      <a href="week5.html" class="active">Week 5 · Governance</a>
+      <a href="week6.html">Week 6 · Distribution</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="week-label">// week 05</p>
+      <h1>Governance</h1>
+      <p class="page-dek">
+        Security, permissions, risk, privacy, and keeping meaningful oversight of AI behavior
+        as systems move from a demo to something many people depend on.
+      </p>
+    </section>
+
+    <div class="subtabs" role="tablist" aria-label="Week 5 sections" data-tabs="#week5-panels">
+      <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
+      <button class="tab-btn" role="tab" id="tab-security" data-tab="panel-security" aria-selected="false" aria-controls="panel-security">Security &amp; Permissions</button>
+      <button class="tab-btn" role="tab" id="tab-risk" data-tab="panel-risk" aria-selected="false" aria-controls="panel-risk">Risk &amp; Privacy</button>
+      <button class="tab-btn" role="tab" id="tab-oversight" data-tab="panel-oversight" aria-selected="false" aria-controls="panel-oversight">Oversight</button>
+      <button class="tab-btn" role="tab" id="tab-notes" data-tab="panel-notes" aria-selected="false" aria-controls="panel-notes">Notes</button>
+    </div>
+
+    <div id="week5-panels">
+
+      <section class="tab-panel" id="panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
+        <h2>Overview</h2>
+        <p class="placeholder">
+          Placeholder — governance as an enabler of adoption (not just a blocker), and the four
+          lenses this week covers: security, permissions, risk/privacy, oversight.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-security" role="tabpanel" tabindex="0" aria-labelledby="tab-security" hidden>
+        <h2>Security &amp; Permissions</h2>
+        <p class="placeholder">Placeholder — least-privilege tool scopes, prompt injection, the instruction-source boundary pattern.</p>
+        <table>
+          <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>Prompt injection via untrusted content</td><td>Treat tool/web output as data, not instructions</td></tr>
+            <tr><td>Over-broad tool access</td><td>Scope tools per task; require confirmation for irreversible actions</td></tr>
+            <tr><td>Credential exposure</td><td>Never place secrets in prompts or logs</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="tab-panel" id="panel-risk" role="tabpanel" tabindex="0" aria-labelledby="tab-risk" hidden>
+        <h2>Risk &amp; Privacy</h2>
+        <p class="placeholder">Placeholder — data classification, what should never enter a prompt, vendor/model data handling terms.</p>
+      </section>
+
+      <section class="tab-panel" id="panel-oversight" role="tabpanel" tabindex="0" aria-labelledby="tab-oversight" hidden>
+        <h2>Oversight</h2>
+        <p class="placeholder">Placeholder — human-in-the-loop checkpoints, audit trails, escalation paths when AI behavior is wrong.</p>
+        <div class="callout warn">
+          <p><strong>Open question:</strong> where should a human approval gate live so it catches
+          real risk without becoming rubber-stamping?</p>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-notes" role="tabpanel" tabindex="0" aria-labelledby="tab-notes" hidden>
+        <h2>Running notes</h2>
+        <p class="placeholder">Placeholder — day-by-day notes go here.</p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Week 5 of 6 · Governance</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
