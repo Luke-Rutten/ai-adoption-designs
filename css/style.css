@@ -157,9 +157,9 @@ p { color: var(--text); }
   border-color: var(--accent-dim);
 }
 
-/* ---- Week tab nav (top-level) ---- */
+/* ---- Topic tab nav (top-level) ---- */
 
-.week-nav {
+.topic-nav {
   max-width: 1080px;
   margin: 0 auto;
   display: flex;
@@ -169,7 +169,7 @@ p { color: var(--text); }
   scrollbar-width: thin;
 }
 
-.week-nav a {
+.topic-nav a {
   font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--text-dim);
@@ -177,11 +177,11 @@ p { color: var(--text); }
   border-bottom: 2px solid transparent;
   white-space: nowrap;
 }
-.week-nav a:hover {
+.topic-nav a:hover {
   color: var(--text);
   text-decoration: none;
 }
-.week-nav a.active {
+.topic-nav a.active {
   color: var(--accent);
   border-bottom-color: var(--accent);
 }
@@ -198,7 +198,7 @@ main {
   margin-bottom: 1.5rem;
 }
 
-.week-label {
+.topic-label {
   font-family: var(--mono);
   font-size: 0.75rem;
   color: var(--accent);
@@ -217,7 +217,7 @@ main {
   max-width: 640px;
 }
 
-/* ---- Sub-tabs within a week ---- */
+/* ---- Sub-tabs within a topic ---- */
 
 .subtabs {
   display: flex;
