@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Foundations &amp; Architecture — AI Adoption Designs</title>
-  <meta name="description" content="How LLMs work, the agent loop, tool use, and the core primitives: MCP, skills, plugins, subagents, memory, RAG.">
+  <meta name="description" content="The core model loop, and the building blocks on top of it: skills, tools, agents, MCPs, workflows, middleware, and context.">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -15,11 +15,11 @@
     <div class="header-row">
       <a class="brand" href="../index.html"><span class="prompt">~/</span>ai-adoption-designs</a>
       <div class="header-spacer"></div>
-      <button class="theme-toggle" type="button" data-theme-toggle>[ light mode ]</button>
     </div>
     <nav class="topic-nav" aria-label="Topics">
       <a href="../index.html">Home</a>
       <a href="foundations.html" class="active">Foundations</a>
+      <a href="context.html">Context</a>
       <a href="practices.html">Best Practices</a>
       <a href="efficiency.html">Token Efficiency</a>
       <a href="evals.html">Evals</a>
@@ -33,39 +33,285 @@
       <p class="topic-label">// topic 01</p>
       <h1>Foundations &amp; Architecture</h1>
       <p class="page-dek">
-        How LLMs work under the hood, where they're strong and where they break, context windows,
-        the agent loop, tool use, and the primitives available for building on top of a model —
-        MCP, skills, plugins, subagents, memory, and RAG — and when each one earns its place.
+        The core model loop, and the building blocks for working with it — skills, tools, agents,
+        MCPs, workflows, middleware, and context — and when each one earns its place.
       </p>
     </section>
 
     <div class="subtabs" role="tablist" aria-label="Foundations sections" data-tabs="#topic-panels">
       <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
-      <button class="tab-btn" role="tab" id="tab-llms" data-tab="panel-llms" aria-selected="false" aria-controls="panel-llms">How LLMs Work</button>
-      <button class="tab-btn" role="tab" id="tab-loop" data-tab="panel-loop" aria-selected="false" aria-controls="panel-loop">Agent Loop &amp; Tool Use</button>
-      <button class="tab-btn" role="tab" id="tab-primitives" data-tab="panel-primitives" aria-selected="false" aria-controls="panel-primitives">Primitives</button>
-      <button class="tab-btn" role="tab" id="tab-notes" data-tab="panel-notes" aria-selected="false" aria-controls="panel-notes">Notes</button>
+      <button class="tab-btn" role="tab" id="tab-loop" data-tab="panel-loop" aria-selected="false" aria-controls="panel-loop">The Core Model Loop</button>
+      <button class="tab-btn" role="tab" id="tab-skills" data-tab="panel-skills" aria-selected="false" aria-controls="panel-skills">Skills</button>
+      <button class="tab-btn" role="tab" id="tab-tools" data-tab="panel-tools" aria-selected="false" aria-controls="panel-tools">Tools</button>
+      <button class="tab-btn" role="tab" id="tab-agents" data-tab="panel-agents" aria-selected="false" aria-controls="panel-agents">Agents</button>
+      <button class="tab-btn" role="tab" id="tab-mcps" data-tab="panel-mcps" aria-selected="false" aria-controls="panel-mcps">MCPs</button>
+      <button class="tab-btn" role="tab" id="tab-workflows" data-tab="panel-workflows" aria-selected="false" aria-controls="panel-workflows">Workflows</button>
+      <button class="tab-btn" role="tab" id="tab-middleware" data-tab="panel-middleware" aria-selected="false" aria-controls="panel-middleware">Middleware</button>
+      <button class="tab-btn" role="tab" id="tab-context" data-tab="panel-context" aria-selected="false" aria-controls="panel-context">Context</button>
     </div>
 
     <div id="topic-panels">
 
       <section class="tab-panel" id="panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
         <h2>Overview</h2>
-        <p class="placeholder">
-          Placeholder — fill in with the topic's framing: why architecture literacy matters before
-          choosing tools, and the core question this topic answers for an adoption program.
+        <p>
+          LLMs are fundamentally neural networks that are designed to predict the next token in
+          a sequence. Tokens, as the building blocks, can be letters, a cluster of letters, or
+          even a whole word. Under the hood, the machine converts inputs into tokens based on a
+          fixed vocabulary bank, and the output is a probability distribution of which token or
+          which vocab piece is likely to appear next.
+        </p>
+        <p>
+          There are billions of node connections in these neural networks, and each input token
+          is processed independently in light of the other tokens around it. This is what we
+          call the context.
         </p>
         <div class="callout">
-          <p><strong>Key question:</strong> given a task, which primitive — prompt, RAG, tool, skill,
-          subagent, or a whole plugin — is the right level of machinery, and why?</p>
+          <p><strong>Key implication:</strong> a model only knows what is in its context. It has
+          no memory of prior chats outside the tokens it is fed. In order for a model to have
+          "memory," this must be reinjected into the input.</p>
+        </div>
+        <p>
+          Randomness is both a great strength and a great weakness of AI. It's what allows it to
+          be flexible, and also what sometimes causes it to go off the rails. This randomness is
+          controlled by what we refer to as temperature. Temperature controls how random the
+          probability distribution selection is — 0 to 0.3 is generally preferred for consistent
+          tasks, while 0.7 to 1 is preferred for more creative tasks. But even 0 is
+          non-deterministic, due to floating point numbers and rounding.
+        </p>
+        <div class="callout">
+          <p><strong>Note: why does it feel like LLMs are good at code?</strong> Correctly
+          written code follows rigid semantic rules — there's a single correct way to write
+          syntax. That makes the token pattern a much clearer signal that's more reliable to
+          replicate.</p>
         </div>
       </section>
 
-      <section class="tab-panel" id="panel-llms" role="tabpanel" tabindex="0" aria-labelledby="tab-llms" hidden>
-        <h2>How LLMs Work</h2>
+      <section class="tab-panel" id="panel-loop" role="tabpanel" tabindex="0" aria-labelledby="tab-loop" hidden>
+        <h2>The Core Model Loop</h2>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 640 500" role="img" aria-labelledby="cml-diagram-title">
+            <title id="cml-diagram-title">The core model loop: prompt assembled from system prompt, chat history, and new input, cascading down through tokens, processing, and probability distribution to a selected next token, which loops back through a cache into tokens</title>
+            <defs>
+              <marker id="cmlarrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="var(--text-dim)"></path>
+              </marker>
+            </defs>
+            <style>
+              .cmlnode rect { fill: var(--bg-raised); stroke: var(--border); stroke-width: 1; }
+              .cmlnode text { fill: var(--text); font-family: var(--mono); font-size: 12px; text-anchor: middle; }
+              .cmlnode.cache rect { stroke: var(--accent-dim); }
+              .cmledge { stroke: var(--text-dim); stroke-width: 1.5; fill: none; marker-end: url(#cmlarrow); }
+              .cmlloop { stroke: var(--accent); stroke-width: 1.5; fill: none; marker-end: url(#cmlarrow); }
+              .cmllabel { fill: var(--text-faint); font-family: var(--mono); font-size: 11px; text-anchor: middle; }
+            </style>
+
+            <g class="cmlnode"><rect x="10" y="10" width="170" height="40" rx="6"></rect><text x="95" y="35">System Prompt</text></g>
+            <g class="cmlnode"><rect x="235" y="10" width="170" height="40" rx="6"></rect><text x="320" y="35">Chat History</text></g>
+            <g class="cmlnode"><rect x="460" y="10" width="170" height="40" rx="6"></rect><text x="545" y="35">New Input</text></g>
+
+            <path class="cmledge" d="M95,50 C95,72 260,72 260,90"></path>
+            <path class="cmledge" d="M320,50 L320,90"></path>
+            <path class="cmledge" d="M545,50 C545,72 380,72 380,90"></path>
+
+            <g class="cmlnode"><rect x="235" y="90" width="170" height="40" rx="6"></rect><text x="320" y="115">Prompt</text></g>
+            <path class="cmledge" d="M320,130 L320,170"></path>
+
+            <g class="cmlnode"><rect x="235" y="170" width="170" height="40" rx="6"></rect><text x="320" y="195">Tokens</text></g>
+            <path class="cmledge" d="M320,210 L320,250"></path>
+
+            <g class="cmlnode"><rect x="235" y="250" width="170" height="40" rx="6"></rect><text x="320" y="275">Processing</text></g>
+            <path class="cmledge" d="M320,290 L320,330"></path>
+
+            <g class="cmlnode"><rect x="215" y="330" width="210" height="50" rx="6"></rect><text x="320" y="351">Probability Distribution</text><text x="320" y="366">(next token)</text></g>
+            <path class="cmledge" d="M320,380 L320,430"></path>
+
+            <g class="cmlnode"><rect x="235" y="430" width="170" height="40" rx="6"></rect><text x="320" y="455">Selected Next Token</text></g>
+
+            <path class="cmlloop" d="M235,450 C120,450 85,420 85,315"></path>
+            <g class="cmlnode cache"><rect x="20" y="270" width="130" height="40" rx="6"></rect><text x="85" y="295">Cached</text></g>
+            <path class="cmlloop" d="M85,270 C85,215 150,190 235,190"></path>
+            <text class="cmllabel" x="100" y="380" transform="rotate(-90 100 380)">repeated one token at a time</text>
+          </svg>
+          <figcaption>Every generation step reprocesses the full prompt — system prompt, chat history, and new
+            input — down through to a single selected token, which is cached and fed back in to produce
+            the next one.</figcaption>
+        </figure>
+
+        <p>
+          The entire context window (system, chat history, new input) is processed all at once
+          every single time.
+        </p>
+
+        <div class="callout">
+          <p><strong>Key implication:</strong> a long chat, even with small, simple prompts, gets
+          expensive quickly because it reprocesses the whole chat on each new message.</p>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-skills" role="tabpanel" tabindex="0" aria-labelledby="tab-skills" hidden>
+        <h2>Skills</h2>
+        <p>
+          Limiting context is both cost- and processing-efficient. Not all available context
+          should be included every time — that would be expensive, and confusing for LLMs to
+          handle. Skills are reusable context an AI can "read" into its context window when
+          relevant.
+        </p>
+
+        <div class="callout">
+          <p><strong>Key concept: progressive disclosure.</strong> Progressive disclosure is the
+          notion that not all context should be available in every single prompt. Rather,
+          sometimes it should be included and sometimes it should be left out. AI systems use
+          descriptions as short-context cues for when further information should be loaded into
+          context; otherwise, it's left out.</p>
+        </div>
+
+        <p>
+          Skills leverage progressive disclosure to load context into the context window only
+          when relevant. A skill has a description — a short set of words that tells the LLM
+          what the skill does and when it should be activated — but hides the rest of the text
+          behind the skill itself. If the LLM determines the skill is relevant, based on its
+          description and the rest of the context it has, it loads the rest of the skill text
+          into its context window, basically as if the user had just given it all of the
+          context contained within the skill.
+        </p>
+
+        <p>
+          In this manner, we're able to leverage reusable context in the form of the skill, but
+          only add it into our context window — which is expensive, and can confuse the LLM if
+          there's too much — when it's relevant to the conversation.
+        </p>
+
+        <div class="code-block">
+          <div class="code-head">
+            <span class="code-lang">always loaded</span>
+          </div>
+          <pre><code><span class="tok-com">---</span>
+<span class="tok-kw">name</span>: pdf-forms
+<span class="tok-kw">description</span>: <span class="tok-str">Fills out and extracts data from PDF form fields. Use when the user mentions a PDF, a form, or asks to fill in or read form fields.</span>
+<span class="tok-com">---</span></code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-head">
+            <span class="code-lang">loaded only when relevant</span>
+          </div>
+          <pre><code><span class="tok-com"># Filling a PDF form</span>
+
+1. Inspect the form fields: `pdftk input.pdf dump_data_fields`
+2. Map each field name to a value
+3. Fill the form: `pdftk input.pdf fill_form data.fdf output filled.pdf`</code></pre>
+        </div>
+
+        <p>
+          This carries a few implications for how skills should be constructed. The first is
+          the scope of the skill, and of its description. There's an inherent trade-off: go too
+          broad, and it activates so often that it doesn't actually narrow the context — it
+          might as well just be always loaded. Go too narrow, and it doesn't activate when it
+          should, and doesn't add any value.
+        </p>
+
+        <p>Skills actually have a third layer to them — three stages of activation:</p>
+        <ul>
+          <li><strong>Always:</strong> the name and description.</li>
+          <li><strong>When relevant:</strong> the skill body text.</li>
+          <li><strong>When extra stuff is needed:</strong> extra files.</li>
+        </ul>
+      </section>
+
+      <section class="tab-panel" id="panel-tools" role="tabpanel" tabindex="0" aria-labelledby="tab-tools" hidden>
+        <h2>Tools</h2>
+        <p>Tools are what allow LLMs to interact with external systems.</p>
+
+        <p>
+          Fundamentally, LLMs are designed to create text outputs. They are <em>large language</em>
+          models — language is what they do. In order to interact with other systems, then, they
+          need something with the ability to translate language into action.
+        </p>
+
+        <p>This is where tools come in.</p>
+
+        <p>
+          Tools are systems designed to accept text in a specific format and then execute some
+          action based on that text. So, for example:
+        </p>
+
+        <div class="code-block">
+          <div class="code-head">
+            <span class="code-lang">model generates</span>
+          </div>
+          <pre><code>{
+  <span class="tok-str">"tool"</span>: <span class="tok-str">"get_weather"</span>,
+  <span class="tok-str">"input"</span>: { <span class="tok-str">"city"</span>: <span class="tok-str">"Seattle"</span> }
+}</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-head">
+            <span class="code-lang">tool returns</span>
+          </div>
+          <pre><code>{
+  <span class="tok-str">"temp_f"</span>: <span class="tok-num">58</span>,
+  <span class="tok-str">"conditions"</span>: <span class="tok-str">"light rain"</span>
+}
+<span class="tok-com">// this result is inserted back into the model's context</span>
+<span class="tok-com">// before it continues generating</span></code></pre>
+        </div>
+
+        <p>
+          This means the tool framework is responsible for doing anything other than outputting
+          text, and can be a great point of control for what the system can or cannot do. The
+          model only ever generates the text. The tool is what actually goes out and does
+          things, then returns information back to the model.
+        </p>
+
+        <p>
+          This doesn't come for free, however — tool descriptions, tool processing, and whatever
+          the tool returns all become part of the context.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-agents" role="tabpanel" tabindex="0" aria-labelledby="tab-agents" hidden>
+        <h2>Agents</h2>
         <p class="placeholder">
-          Placeholder — next-token prediction, training phases (pretraining / fine-tuning / RLHF),
-          why models hallucinate, and what "reasoning" is actually doing under the hood.
+          Placeholder — a model running the core loop with a goal, tools, and enough autonomy to
+          decide its own next step. Subagents as isolated contexts for parallelism or a
+          different tool scope; when spinning one up is worth the overhead.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-mcps" role="tabpanel" tabindex="0" aria-labelledby="tab-mcps" hidden>
+        <h2>MCPs</h2>
+        <p class="placeholder">
+          Placeholder — Model Context Protocol as a standard way to expose tools and resources to
+          any compatible client, instead of writing bespoke integrations per agent. Tradeoffs
+          versus a one-off tool.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-workflows" role="tabpanel" tabindex="0" aria-labelledby="tab-workflows" hidden>
+        <h2>Workflows</h2>
+        <p class="placeholder">
+          Placeholder — deterministic, multi-step chains versus a freeform agent loop: when a
+          fixed sequence of steps is more reliable (and cheaper) than letting the model decide
+          the order itself.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-middleware" role="tabpanel" tabindex="0" aria-labelledby="tab-middleware" hidden>
+        <h2>Middleware</h2>
+        <p class="placeholder">
+          Placeholder — hooks, guardrails, and pre/post-processing that wrap the model call:
+          validation, logging, redaction, and policy enforcement that shouldn't live inside the
+          prompt itself.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-context" role="tabpanel" tabindex="0" aria-labelledby="tab-context" hidden>
+        <h2>Context</h2>
+        <p class="placeholder">
+          Placeholder — the context window as the model's entire working memory for a turn; why
+          "more context" isn't free (cost, latency, attention dilution); the idea of a context
+          budget, and how RAG and memory feed into it.
         </p>
 
         <h3>Strengths, weaknesses, limits</h3>
@@ -79,93 +325,6 @@
             <tr><td>Code generation from examples</td><td>Multi-step state tracking without tools</td><td>No persistent memory by default</td></tr>
           </tbody>
         </table>
-
-        <h3>Context windows</h3>
-        <p class="placeholder">
-          Placeholder — context window as the model's entire working memory for a turn; why
-          "more context" isn't free (cost, latency, attention dilution); the idea of a context budget.
-        </p>
-      </section>
-
-      <section class="tab-panel" id="panel-loop" role="tabpanel" tabindex="0" aria-labelledby="tab-loop" hidden>
-        <h2>The Agent Loop &amp; Tool Use</h2>
-        <p class="placeholder">
-          Placeholder — the read → think → act → observe loop, and why "agent" mostly means
-          "a model calling tools in a loop with memory of its own actions."
-        </p>
-
-        <figure class="diagram">
-          <svg viewBox="0 0 640 220" role="img" aria-labelledby="loop-diagram-title">
-            <title id="loop-diagram-title">The agent loop: observe, think, act, repeat</title>
-            <defs>
-              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-                <path d="M0,0 L8,3 L0,6 Z" fill="var(--text-dim)"></path>
-              </marker>
-            </defs>
-            <style>
-              .node rect { fill: var(--bg-raised); stroke: var(--border); stroke-width: 1; }
-              .node text { fill: var(--text); font-family: var(--mono); font-size: 13px; text-anchor: middle; }
-              .edge { stroke: var(--text-dim); stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
-              .edge-label { fill: var(--text-faint); font-family: var(--mono); font-size: 11px; text-anchor: middle; }
-            </style>
-
-            <g class="node"><rect x="20" y="90" width="120" height="50" rx="6"></rect><text x="80" y="120">User goal</text></g>
-            <g class="node"><rect x="190" y="20" width="120" height="50" rx="6"></rect><text x="250" y="50">Think</text></g>
-            <g class="node"><rect x="360" y="20" width="120" height="50" rx="6"></rect><text x="420" y="50">Act (tool call)</text></g>
-            <g class="node"><rect x="360" y="150" width="120" height="50" rx="6"></rect><text x="420" y="180">Observe result</text></g>
-            <g class="node"><rect x="190" y="150" width="120" height="50" rx="6"></rect><text x="250" y="180">Update context</text></g>
-            <g class="node"><rect x="500" y="90" width="120" height="50" rx="6"></rect><text x="560" y="120">Final response</text></g>
-
-            <path class="edge" d="M140,110 C165,110 165,45 190,45"></path>
-            <path class="edge" d="M310,45 C335,45 335,45 360,45"></path>
-            <path class="edge" d="M420,70 C420,95 420,125 420,150"></path>
-            <path class="edge" d="M360,175 C335,175 335,175 310,175"></path>
-            <path class="edge" d="M250,150 C250,120 250,80 250,70"></path>
-            <text class="edge-label" x="250" y="110">loop until done</text>
-            <path class="edge" d="M310,55 C400,80 480,100 500,108"></path>
-          </svg>
-          <figcaption>Observe → think → act → observe, looping until the model decides it's done.</figcaption>
-        </figure>
-
-        <h3>A minimal tool-call shape</h3>
-        <div class="code-block">
-          <div class="code-head">
-            <span class="code-lang">json</span>
-            <button class="copy-btn" type="button">copy</button>
-          </div>
-          <pre><code>{
-  <span class="tok-str">"tool"</span>: <span class="tok-str">"search_docs"</span>,
-  <span class="tok-str">"input"</span>: { <span class="tok-str">"query"</span>: <span class="tok-str">"refund policy"</span>, <span class="tok-str">"top_k"</span>: <span class="tok-num">5</span> }
-}
-<span class="tok-com">// model receives the result, decides whether to call another tool</span>
-<span class="tok-com">// or respond — this is the whole loop</span></code></pre>
-        </div>
-      </section>
-
-      <section class="tab-panel" id="panel-primitives" role="tabpanel" tabindex="0" aria-labelledby="tab-primitives" hidden>
-        <h2>Primitives — and when to use each</h2>
-        <p class="placeholder">
-          Placeholder — a decision framework for choosing between these, roughly in order of
-          increasing machinery and commitment.
-        </p>
-        <table>
-          <thead>
-            <tr><th>Primitive</th><th>What it is</th><th>Reach for it when…</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>RAG</td><td>Retrieve relevant content, inject into context</td><td>Knowledge is large, changes often, and doesn't need to be "always on"</td></tr>
-            <tr><td>Skill</td><td>Packaged instructions + optional scripts, loaded on demand</td><td>A repeatable task has a known best procedure worth codifying</td></tr>
-            <tr><td>MCP server</td><td>Standard protocol exposing tools/resources to any client</td><td>You need the same tool available across multiple agent clients</td></tr>
-            <tr><td>Plugin</td><td>Bundle of skills, agents, commands, hooks distributed together</td><td>You're packaging a capability for other teams to install</td></tr>
-            <tr><td>Subagent</td><td>A separate agent invocation with its own context</td><td>A task needs isolation, parallelism, or a different tool scope</td></tr>
-            <tr><td>Memory</td><td>Persisted state read back into future sessions</td><td>Continuity across sessions matters more than a clean context</td></tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section class="tab-panel" id="panel-notes" role="tabpanel" tabindex="0" aria-labelledby="tab-notes" hidden>
-        <h2>Running notes</h2>
-        <p class="placeholder">Placeholder — day-by-day notes, open questions, and things to revisit go here.</p>
       </section>
 
     </div>

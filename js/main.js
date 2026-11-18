@@ -1,42 +1,6 @@
-// AI Adoption Designs — shared client-side behavior (theme toggle, sub-tabs, copy buttons)
+// AI Adoption Designs — shared client-side behavior (sub-tabs, copy buttons)
 (function () {
   "use strict";
-
-  var STORAGE_KEY = "aad-theme";
-
-  function initTheme() {
-    var root = document.documentElement;
-    var stored = null;
-    try {
-      stored = localStorage.getItem(STORAGE_KEY);
-    } catch (e) {
-      /* storage unavailable (private mode etc.) — fall back to system preference */
-    }
-    if (stored === "light" || stored === "dark") {
-      root.setAttribute("data-theme", stored);
-    }
-
-    var toggle = document.querySelector("[data-theme-toggle]");
-    if (!toggle) return;
-
-    function label() {
-      var current = root.getAttribute("data-theme");
-      var isLight = current === "light" || (!current && window.matchMedia && !window.matchMedia("(prefers-color-scheme: dark)").matches && window.matchMedia("(prefers-color-scheme: light)").matches);
-      toggle.textContent = isLight ? "[ dark mode ]" : "[ light mode ]";
-    }
-    label();
-
-    toggle.addEventListener("click", function () {
-      var current = root.getAttribute("data-theme");
-      var isDarkNow = current === "dark" || (!current);
-      var next = isDarkNow ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      try {
-        localStorage.setItem(STORAGE_KEY, next);
-      } catch (e) {}
-      label();
-    });
-  }
 
   function initTabs() {
     var groups = document.querySelectorAll("[data-tabs]");
@@ -115,7 +79,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    initTheme();
     initTabs();
     initCopyButtons();
   });

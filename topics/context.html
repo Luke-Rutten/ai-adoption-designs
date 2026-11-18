@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Context — AI Adoption Designs</title>
+  <meta name="description" content="Managing what's in the context window: RAG, injection risk, compaction, and carrying state between sessions.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-row">
+      <a class="brand" href="../index.html"><span class="prompt">~/</span>ai-adoption-designs</a>
+      <div class="header-spacer"></div>
+    </div>
+    <nav class="topic-nav" aria-label="Topics">
+      <a href="../index.html">Home</a>
+      <a href="foundations.html">Foundations</a>
+      <a href="context.html" class="active">Context</a>
+      <a href="practices.html">Best Practices</a>
+      <a href="efficiency.html">Token Efficiency</a>
+      <a href="evals.html">Evals</a>
+      <a href="governance.html">Governance</a>
+      <a href="distribution.html">Distribution</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="topic-label">// topic 02</p>
+      <h1>Context</h1>
+      <p class="page-dek">
+        Managing what actually ends up in the context window — pulling the right content in with
+        RAG, keeping untrusted content from hijacking the model, compacting history as it grows,
+        and carrying state across sessions.
+      </p>
+    </section>
+
+    <div class="subtabs" role="tablist" aria-label="Context sections" data-tabs="#topic-panels">
+      <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
+      <button class="tab-btn" role="tab" id="tab-rag" data-tab="panel-rag" aria-selected="false" aria-controls="panel-rag">RAG</button>
+      <button class="tab-btn" role="tab" id="tab-injection" data-tab="panel-injection" aria-selected="false" aria-controls="panel-injection">Injection</button>
+      <button class="tab-btn" role="tab" id="tab-compaction" data-tab="panel-compaction" aria-selected="false" aria-controls="panel-compaction">Compaction</button>
+      <button class="tab-btn" role="tab" id="tab-between" data-tab="panel-between" aria-selected="false" aria-controls="panel-between">Between Sessions</button>
+    </div>
+
+    <div id="topic-panels">
+
+      <section class="tab-panel" id="panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
+        <h2>Overview</h2>
+        <p class="placeholder">
+          Placeholder — why what's in the context window matters as much as the model itself:
+          a model is only as good as what it's been given to work with, and context is finite,
+          costly, and sometimes adversarial.
+        </p>
+        <div class="callout">
+          <p><strong>Key question:</strong> for any given turn, what actually needs to be in
+          context right now — versus retrievable later, summarized away, or left out entirely?</p>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-rag" role="tabpanel" tabindex="0" aria-labelledby="tab-rag" hidden>
+        <h2>RAG</h2>
+        <p class="placeholder">
+          Placeholder — retrieval-augmented generation as a way to pull in relevant content on
+          demand instead of stuffing everything into the prompt up front. Chunking, embeddings,
+          retrieval quality, and when RAG beats just widening the context window.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-injection" role="tabpanel" tabindex="0" aria-labelledby="tab-injection" hidden>
+        <h2>Injection</h2>
+        <p class="placeholder">
+          Placeholder — prompt injection as the risk that untrusted content pulled into context
+          (web pages, documents, tool output) carries instructions the model shouldn't follow.
+          Treating retrieved content as data, not commands, and where that boundary needs to be
+          enforced.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-compaction" role="tabpanel" tabindex="0" aria-labelledby="tab-compaction" hidden>
+        <h2>Compaction</h2>
+        <p class="placeholder">
+          Placeholder — what happens as a session grows past the context window: summarizing or
+          dropping older turns, what's safe to compact versus what must be preserved verbatim,
+          and the tradeoffs against just starting fresh.
+        </p>
+      </section>
+
+      <section class="tab-panel" id="panel-between" role="tabpanel" tabindex="0" aria-labelledby="tab-between" hidden>
+        <h2>Between Sessions</h2>
+        <p class="placeholder">
+          Placeholder — carrying state across sessions once the current context window closes:
+          memory files, persisted summaries, and what's worth remembering versus re-deriving
+          each time.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Topic · Context</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
