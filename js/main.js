@@ -39,6 +39,25 @@
         });
       });
 
+      // "Next Topic" control at the bottom of each panel, cycling to the next sub-tab
+      if (panels.length > 1) {
+        panels.forEach(function (panel, idx) {
+          var nav = document.createElement("div");
+          nav.className = "next-topic";
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "next-topic-btn";
+          btn.textContent = "Next Topic →";
+          btn.addEventListener("click", function () {
+            var nextIdx = (idx + 1) % buttons.length;
+            activate(buttons[nextIdx].getAttribute("data-tab"), true);
+            buttons[nextIdx].scrollIntoView({ inline: "nearest", block: "nearest" });
+          });
+          nav.appendChild(btn);
+          panel.appendChild(nav);
+        });
+      }
+
       // activate whichever button is already marked selected in the markup
       var initial = group.querySelector('.tab-btn[aria-selected="true"]') || buttons[0];
       if (initial) activate(initial.getAttribute("data-tab"), false);

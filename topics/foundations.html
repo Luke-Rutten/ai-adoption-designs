@@ -40,7 +40,6 @@
 
     <div class="subtabs" role="tablist" aria-label="Foundations sections" data-tabs="#topic-panels">
       <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
-      <button class="tab-btn" role="tab" id="tab-loop" data-tab="panel-loop" aria-selected="false" aria-controls="panel-loop">The Core Model Loop</button>
       <button class="tab-btn" role="tab" id="tab-skills" data-tab="panel-skills" aria-selected="false" aria-controls="panel-skills">Skills</button>
       <button class="tab-btn" role="tab" id="tab-tools" data-tab="panel-tools" aria-selected="false" aria-controls="panel-tools">Tools</button>
       <button class="tab-btn" role="tab" id="tab-agents" data-tab="panel-agents" aria-selected="false" aria-controls="panel-agents">Agents</button>
@@ -71,24 +70,8 @@
           no memory of prior chats outside the tokens it is fed. In order for a model to have
           "memory," this must be reinjected into the input.</p>
         </div>
-        <p>
-          Randomness is both a great strength and a great weakness of AI. It's what allows it to
-          be flexible, and also what sometimes causes it to go off the rails. This randomness is
-          controlled by what we refer to as temperature. Temperature controls how random the
-          probability distribution selection is — 0 to 0.3 is generally preferred for consistent
-          tasks, while 0.7 to 1 is preferred for more creative tasks. But even 0 is
-          non-deterministic, due to floating point numbers and rounding.
-        </p>
-        <div class="callout">
-          <p><strong>Note: why does it feel like LLMs are good at code?</strong> Correctly
-          written code follows rigid semantic rules — there's a single correct way to write
-          syntax. That makes the token pattern a much clearer signal that's more reliable to
-          replicate.</p>
-        </div>
-      </section>
 
-      <section class="tab-panel" id="panel-loop" role="tabpanel" tabindex="0" aria-labelledby="tab-loop" hidden>
-        <h2>The Core Model Loop</h2>
+        <h3>The core model loop</h3>
 
         <figure class="diagram">
           <svg viewBox="0 0 640 500" role="img" aria-labelledby="cml-diagram-title">
@@ -147,6 +130,21 @@
         <div class="callout">
           <p><strong>Key implication:</strong> a long chat, even with small, simple prompts, gets
           expensive quickly because it reprocesses the whole chat on each new message.</p>
+        </div>
+
+        <p>
+          Randomness is both a great strength and a great weakness of AI. It's what allows it to
+          be flexible, and also what sometimes causes it to go off the rails. This randomness is
+          controlled by what we refer to as temperature. Temperature controls how random the
+          probability distribution selection is — 0 to 0.3 is generally preferred for consistent
+          tasks, while 0.7 to 1 is preferred for more creative tasks. But even 0 is
+          non-deterministic, due to floating point numbers and rounding.
+        </p>
+        <div class="callout">
+          <p><strong>Note: why does it feel like LLMs are good at code?</strong> Correctly
+          written code follows rigid semantic rules — there's a single correct way to write
+          syntax. That makes the token pattern a much clearer signal that's more reliable to
+          replicate.</p>
         </div>
       </section>
 
