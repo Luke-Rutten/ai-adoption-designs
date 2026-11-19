@@ -270,9 +270,11 @@
         <p>Tools are what allow LLMs to interact with external systems.</p>
 
         <p>
-          Fundamentally, LLMs are designed to create text outputs. They are <em>large language</em>
-          models — language is what they do. In order to interact with other systems, then, they
-          need something with the ability to translate language into action.
+          Fundamentally, LLMs are next-token generators. That's all they do — produce tokens, one
+          at a time. Tokens, as text, don't directly produce action; an LLM on its own can't send
+          an email, read a file, or run a search, no matter how clearly it describes the intent
+          to do so. Getting from text to action requires a second step, something that sits
+          outside the model and turns generated text into a real effect in the world.
         </p>
 
         <p>This is where tools come in.</p>
@@ -313,6 +315,28 @@
         <p>
           This doesn't come for free, however — tool descriptions, tool processing, and whatever
           the tool returns all become part of the context.
+        </p>
+
+        <p>
+          Tool descriptions enter the system prompt much the same way skill descriptions do —
+          always present, telling the model what each tool does and when to reach for it. Some of
+          the most basic tools, like code execution for certain models, skip that step entirely
+          and get trained into the model itself rather than described at request time. Tools
+          typically also carry a schema: a definition of exactly what shape the tool call's input
+          has to take — which fields are required, what type each one is — so the model's output
+          can actually be parsed and acted on, not just loosely interpreted.
+        </p>
+
+        <p>
+          Getting from generated text to an executed action depends on activation: some models
+          emit special signal tokens that mark where a tool call begins and where it ends, so the
+          surrounding system knows which span of output to treat as a tool call rather than as a
+          reply to the user. Those spans are typically flagged separately from ordinary
+          user-facing text, which is how an application like Claude Code knows to hide the raw
+          tool call from the person watching, and instead hand its contents off to whatever
+          framework actually executes it. Middleware often sits at that handoff point, checking
+          that the emitted tool call actually matches its schema before anything downstream tries
+          to run it.
         </p>
       </section>
 
