@@ -306,23 +306,17 @@
 
       <section class="tab-panel" id="panel-context" role="tabpanel" tabindex="0" aria-labelledby="tab-context" hidden>
         <h2>Context</h2>
-        <p class="placeholder">
-          Placeholder — the context window as the model's entire working memory for a turn; why
-          "more context" isn't free (cost, latency, attention dilution); the idea of a context
-          budget, and how RAG and memory feed into it.
+        <p>
+          As is hopefully clear now, context lies at the core of every LLM output. It's the
+          piece that actually gets processed. It's what determines the available skills, tools,
+          agents, and information. It's how costs are calculated. Ultimately, context is at the
+          center of almost everything LLMs do.
         </p>
-
-        <h3>Strengths, weaknesses, limits</h3>
-        <table>
-          <thead>
-            <tr><th>Strong at</th><th>Weak at</th><th>Hard limit</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Pattern completion, synthesis, drafting</td><td>Precise arithmetic, long exact recall</td><td>Context window size</td></tr>
-            <tr><td>Following structured instructions</td><td>Knowing what it doesn't know</td><td>Knowledge cutoff</td></tr>
-            <tr><td>Code generation from examples</td><td>Multi-step state tracking without tools</td><td>No persistent memory by default</td></tr>
-          </tbody>
-        </table>
+        <p>
+          Following this, managing context is of critical importance. Consequently, it gets an
+          entire section in this repository.
+        </p>
+        <p><a class="card-link" href="context.html">→ open the Context topic</a></p>
       </section>
 
     </div>

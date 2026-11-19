@@ -224,12 +224,13 @@ main {
 
 .next-topic {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
   margin-top: 2.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
 }
 
+.prev-topic-btn,
 .next-topic-btn {
   font-family: var(--mono);
   font-size: 0.85rem;
@@ -239,8 +240,13 @@ main {
   cursor: pointer;
   padding: 0.3rem 0;
 }
+.prev-topic-btn:hover,
 .next-topic-btn:hover {
   text-decoration: underline;
+}
+
+.next-topic-btn {
+  margin-left: auto;
 }
 
 /* ---- Cards (landing page topics) ---- */

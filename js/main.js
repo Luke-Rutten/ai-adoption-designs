@@ -19,8 +19,19 @@
         panels.forEach(function (p) {
           var match = p.getAttribute("id") === id;
           p.hidden = !match;
-          if (match && focus) p.focus();
+          if (match && focus) p.focus({ preventScroll: true });
         });
+      }
+
+      // scroll back to the top of the subtabs so a newly activated panel is
+      // read from its start, instead of staying wherever the trigger button was.
+      // Accounts for the sticky header so the subtabs row isn't hidden under it.
+      function scrollToTabsTop(activeBtn) {
+        activeBtn.scrollIntoView({ inline: "nearest", block: "nearest" });
+        var header = document.querySelector(".site-header");
+        var headerHeight = header ? header.getBoundingClientRect().height : 0;
+        var targetY = window.scrollY + group.getBoundingClientRect().top - headerHeight - 12;
+        window.scrollTo({ top: Math.max(targetY, 0), behavior: "smooth" });
       }
 
       buttons.forEach(function (btn, idx) {
@@ -39,21 +50,37 @@
         });
       });
 
-      // "Next Topic" control at the bottom of each panel, cycling to the next sub-tab
+      // "Previous Topic" / "Next Topic" controls at the bottom of each panel,
+      // cycling between sub-tabs. Previous is omitted on the first (Overview) panel.
       if (panels.length > 1) {
         panels.forEach(function (panel, idx) {
           var nav = document.createElement("div");
           nav.className = "next-topic";
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "next-topic-btn";
-          btn.textContent = "Next Topic →";
-          btn.addEventListener("click", function () {
+
+          if (idx > 0) {
+            var prevBtn = document.createElement("button");
+            prevBtn.type = "button";
+            prevBtn.className = "prev-topic-btn";
+            prevBtn.textContent = "← Previous Topic";
+            prevBtn.addEventListener("click", function () {
+              var prevIdx = (idx - 1 + buttons.length) % buttons.length;
+              activate(buttons[prevIdx].getAttribute("data-tab"), true);
+              scrollToTabsTop(buttons[prevIdx]);
+            });
+            nav.appendChild(prevBtn);
+          }
+
+          var nextBtn = document.createElement("button");
+          nextBtn.type = "button";
+          nextBtn.className = "next-topic-btn";
+          nextBtn.textContent = "Next Topic →";
+          nextBtn.addEventListener("click", function () {
             var nextIdx = (idx + 1) % buttons.length;
             activate(buttons[nextIdx].getAttribute("data-tab"), true);
-            buttons[nextIdx].scrollIntoView({ inline: "nearest", block: "nearest" });
+            scrollToTabsTop(buttons[nextIdx]);
           });
-          nav.appendChild(btn);
+          nav.appendChild(nextBtn);
+
           panel.appendChild(nav);
         });
       }
