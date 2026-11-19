@@ -54,6 +54,8 @@
       // cycling between sub-tabs. Previous is omitted on the first (Overview) panel.
       if (panels.length > 1) {
         panels.forEach(function (panel, idx) {
+          if (panel.id === "panel-context") return;
+
           var nav = document.createElement("div");
           nav.className = "next-topic";
 

@@ -296,6 +296,10 @@ main {
   margin-top: 0.3rem;
 }
 
+.context-link {
+  color: var(--accent);
+}
+
 .status-pill {
   font-family: var(--mono);
   font-size: 0.68rem;
