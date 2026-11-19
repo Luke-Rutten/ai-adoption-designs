@@ -62,8 +62,7 @@
           call the context.
         </p>
         <div class="callout">
-          <p><strong>Key implication:</strong> </p>
-          <p>A model only knows what is in its context. It has
+          <p><strong>Key implication:</strong> A model only knows what is in its context. It has
           no memory of prior chats outside the tokens it is fed. In order for a model to have
           "memory," this must be reinjected into the input.</p>
         </div>
@@ -112,11 +111,8 @@
             <path class="cmlloop" d="M235,450 C120,450 85,420 85,315"></path>
             <g class="cmlnode cache"><rect x="20" y="270" width="130" height="40" rx="6"></rect><text x="85" y="295">Cached</text></g>
             <path class="cmlloop" d="M85,270 C85,215 150,190 235,190"></path>
-            <text class="cmllabel" x="100" y="195" transform="rotate(-25 100 380)">repeated one token at a time</text>
+            <text class="cmllabel" x="140" y="195" transform="rotate(-25 100 380)">repeated one token at a time</text>
           </svg>
-          <figcaption>Every generation step reprocesses the full prompt — system prompt, chat history, and new
-            input — down through to a single selected token, which is cached and fed back in to produce
-            the next one.</figcaption>
         </figure>
 
         <p>
@@ -125,7 +121,7 @@
         </p>
 
         <div class="callout">
-          <p><strong>Key implication:</strong> a long chat, even with small, simple prompts, gets
+          <p><strong>Key implication:</strong> A long chat, even with small, simple prompts, gets
           expensive quickly because it reprocesses the whole chat on each new message.</p>
         </div>
 
