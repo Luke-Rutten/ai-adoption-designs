@@ -143,10 +143,13 @@
       <section class="tab-panel" id="panel-skills" role="tabpanel" tabindex="0" aria-labelledby="tab-skills" hidden>
         <h2>Skills</h2>
         <p>
-          Limiting context is both cost- and processing-efficient. Not all available context
-          should be included every time — that would be expensive, and confusing for LLMs to
-          handle. Skills are reusable context an AI can "read" into its context window when
-          relevant.
+          Skills exist to solve a specific tension. Some context — a workflow, a reference,
+          a set of instructions — is needed sometimes, but not every single turn. Including it
+          all the time bloats context: it's expensive, and it's confusing for LLMs to handle
+          when the prompt is full of material that's irrelevant to the task at hand. But leaving
+          it out entirely is also bad — it means re-typing or re-explaining the same thing every
+          time it's actually needed. A skill is reusable, shareable context that loads only when
+          it's relevant, avoiding both problems at once.
         </p>
 
         <div class="callout">
@@ -171,6 +174,24 @@
           In this manner, we're able to leverage reusable context in the form of the skill, but
           only add it into our context window — which is expensive, and can confuse the LLM if
           there's too much — when it's relevant to the conversation.
+        </p>
+
+        <p>
+          Mechanically, there's nothing special going on here — it's all just next-token
+          generation, same as everything else in the core model loop above. Every skill's name
+          and description is always part of the system prompt, every single turn.
+          If the model judges a skill relevant to what the user is asking, it generates a tool
+          call to load that skill, and the skill's body text comes back into context as the
+          result of that tool call — exactly like any other tool result. Nothing about this is a
+          separate mechanism from tool use; it's tool use, applied to loading text.
+        </p>
+
+        <p>
+          This has a key implication: since the description is what the model reasons over to
+          decide whether to load the skill, and it's always in context, that description should
+          be short, specific, and should read like an activation instruction — something close
+          to "use this skill when &lt;specific situation&gt;" — rather than a vague summary of
+          what the skill contains.
         </p>
 
         <div class="code-block">
@@ -207,6 +228,41 @@
           <li><strong>When relevant:</strong> the skill body text.</li>
           <li><strong>When extra stuff is needed:</strong> extra files.</li>
         </ul>
+
+        <p>
+          That third layer doesn't load automatically just because the skill activated. Extra
+          files aren't pulled into context when the skill body loads — they're reached the same
+          way everything else is reached, through further next-token generation. The skill body
+          has to specifically reference a file by name or path for the model to know it exists
+          and decide to go get it. A skill can activate and still never touch its extra files, if
+          nothing in the body text points the model toward them.
+        </p>
+
+        <p>
+          Across the industry, extra files tend to fall into three categories, though a skill
+          isn't limited to these:
+        </p>
+        <ul>
+          <li><strong>Scripts:</strong> blocks of code — Python, shell, anything executable —
+          that are never loaded into context themselves. Instead, the model generates a tool call
+          to run the script, and only the script's <em>output</em> comes back into context, the
+          same way any other tool result does.</li>
+          <li><strong>References:</strong> plain text or documents that <em>do</em> get loaded
+          into context when the model reads them — extra information that's useful but too long
+          or too specific to put in the skill body itself.</li>
+          <li><strong>Assets:</strong> files a script might operate on, or that get copied or
+          handed off somewhere, rather than read. The model typically only ever sees the asset's
+          path, not its contents — it's something other tools act on, not something the model
+          reads.</li>
+        </ul>
+
+        <p>
+          Semantic activation can also be bypassed entirely: typing a skill's name directly
+          (e.g. <code>/skill-name</code>) forces it to load, regardless of whether its
+          description would otherwise have matched. But loading is all that guarantees — a skill
+          entering context guarantees only that its text has been read by the model, not that
+          the model acts on it. What happens next is still just generation.
+        </p>
       </section>
 
       <section class="tab-panel" id="panel-tools" role="tabpanel" tabindex="0" aria-labelledby="tab-tools" hidden>
