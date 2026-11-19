@@ -342,11 +342,81 @@
 
       <section class="tab-panel" id="panel-agents" role="tabpanel" tabindex="0" aria-labelledby="tab-agents" hidden>
         <h2>Agents</h2>
-        <p class="placeholder">
-          Placeholder — a model running the core loop with a goal, tools, and enough autonomy to
-          decide its own next step. Subagents as isolated contexts for parallelism or a
-          different tool scope; when spinning one up is worth the overhead.
+
+        <p>
+          At a high level, agents are mostly taken care of for you. A plain LLM call is just a
+          single round of next-token generation: you send a prompt, it generates tokens, and
+          those tokens come back to you as a string of text. That's the whole interaction. On its
+          own, a single call can't iterate — it can't generate a tool call, get that tool call
+          executed, see the result, and decide what to do next. There's no loop, no automated
+          goal-directed behavior, just one prompt, one response.
         </p>
+
+        <p>
+          An agent is what adds that loop: multi-step, goal-directed, iterative processing, where
+          the model's own output at each step feeds back in to decide the next one. Building that
+          loop is real architecture — deciding when to stop, how to feed tool results back in,
+          how to handle errors — but it's not something you typically need to design yourself.
+          Mainline harnesses like Claude Code or Cursor already handle the agent loop for you.
+        </p>
+
+        <p>
+          What's actually useful to understand, day to day, is <strong>subagents</strong> —
+          because those are something you configure.
+        </p>
+
+        <p>
+          A subagent works a lot like a skill. It has a description
+          that's always loaded into the system prompt, every turn. The model can generate a tool
+          call to activate it when the description looks relevant, and once activated, the
+          subagent's own body text — the instructions for what it does — loads in as context,
+          the same way a skill's body does.
+        </p>
+
+        <p>Where a subagent differs from a skill is in a few specific ways:</p>
+        <ul>
+          <li><strong>It runs in its own context window.</strong> Activating a subagent doesn't
+          load its text into the main conversation's context — it spins up a separate context
+          window entirely. That window typically starts with a system prompt of its own, a
+          delegation prompt from whatever decided the subagent was needed (a summary of the task
+          to do), and the subagent's body text. It then runs its own loop, independently, outside
+          the main chat UI, until it reaches a conclusion. At that point it sends a summary of
+          what it did and learned back to the main conversation, which shows up there as a single
+          tool call result.</li>
+          <li><strong>It can run on a different model.</strong> The main conversation might run
+          on a large, expensive model, while a subagent doing quick, mechanical work — reading a
+          file, running a lookup — runs on something cheaper.</li>
+          <li><strong>It can be limited to a subset of tools.</strong> A subagent can be
+          restricted so it only has, say, a read-only tool — not just discouraged from writing
+          anywhere, but structurally unable to, even if the model "wanted" to.</li>
+          <li><strong>It can have specific skills forced into context.</strong> You can specify
+          skills that always load with a given subagent, rather than relying on semantic
+          activation.</li>
+        </ul>
+
+        <p>
+          This unlocks <strong>context isolation</strong>, in both directions. The main
+          conversation doesn't get clogged up with everything the subagent did along the way —
+          every tool call, every edit, every dead end it troubleshot — only the final summary.
+          And the subagent doesn't have to carry the main conversation's entire history into its
+          own context either; it can start clean and do its own processing without re-reading
+          everything that came before.
+        </p>
+
+        <p>There are three ways a skill ends up available inside a subagent's context:</p>
+        <ul>
+          <li><strong>Standard, global availability.</strong> Any skill that's globally available
+          is also available to the subagent, and can activate for it the same way it would in
+          the main conversation.</li>
+          <li><strong>Forced in the subagent's front matter.</strong> Listing a skill in the
+          subagent's configuration guarantees its full body text is loaded into the subagent's
+          context from the moment it starts, with no activation step needed.</li>
+          <li><strong>Scoped to the subagent only.</strong> A reference or asset file placed
+          inside the subagent's own folder, with explicit instructions for when to read it and
+          where to find it, is reachable only from that subagent — it never activates for the
+          main conversation or any other subagent, but it still activates conditionally rather
+          than always loading.</li>
+        </ul>
       </section>
 
       <section class="tab-panel" id="panel-mcps" role="tabpanel" tabindex="0" aria-labelledby="tab-mcps" hidden>
