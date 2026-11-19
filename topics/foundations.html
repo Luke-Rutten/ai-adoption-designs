@@ -50,11 +50,11 @@
       <section class="tab-panel" id="panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
         <h2>Overview</h2>
         <p>
-          LLMs are fundamentally neural networks that are designed to predict the next token in
+          LLMs are fundamentally neural networks designed to predict the next token in
           a sequence. Tokens, as the building blocks, can be letters, a cluster of letters, or
-          even a whole word. Under the hood, the machine converts inputs into tokens based on a
-          fixed vocabulary bank, and the output is a probability distribution of which token or
-          which vocab piece is likely to appear next.
+          even a whole word. Under the hood, LLMs convert user inputs into tokens using a
+          fixed vocabulary bank `(e.g., "Through thick and" \-\-> ["Th" + "rough", "thick", "and"])`, and the output is a probability distribution for which token
+          is likely to appear next `(e.g., ["thin" = 0.8, "thicker" = 0.1, "and" = 0.1])`.
         </p>
         <p>
           There are billions of node connections in these neural networks, and each input token
