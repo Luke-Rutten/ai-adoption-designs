@@ -20,17 +20,16 @@
       <a href="../index.html">Home</a>
       <a href="foundations.html">Foundations</a>
       <a href="context.html">Context</a>
-      <a href="practices.html" class="active">Best Practices</a>
-      <a href="efficiency.html">Token Efficiency</a>
       <a href="evals.html">Evals</a>
       <a href="governance.html">Governance</a>
       <a href="distribution.html">Distribution</a>
+      <a href="practices.html" class="active">Best Practices</a>
     </nav>
   </header>
 
   <main id="main">
     <section class="page-head">
-      <p class="topic-label">// topic 03</p>
+      <p class="topic-label">// topic 06</p>
       <h1>Best Practices</h1>
     </section>
 
@@ -38,6 +37,7 @@
       <button class="tab-btn" role="tab" id="tab-overview" data-tab="panel-overview" aria-selected="true" aria-controls="panel-overview">Overview</button>
       <button class="tab-btn" role="tab" id="tab-patterns" data-tab="panel-patterns" aria-selected="false" aria-controls="panel-patterns">Design Patterns</button>
       <button class="tab-btn" role="tab" id="tab-examples" data-tab="panel-examples" aria-selected="false" aria-controls="panel-examples">Examples</button>
+      <button class="tab-btn" role="tab" id="tab-efficiency" data-tab="panel-efficiency" aria-selected="false" aria-controls="panel-efficiency">Token Efficiency</button>
       <button class="tab-btn" role="tab" id="tab-notes" data-tab="panel-notes" aria-selected="false" aria-controls="panel-notes">Notes</button>
     </div>
 
@@ -81,6 +81,33 @@
 <span class="tok-kw">name</span>: example-skill
 <span class="tok-kw">description</span>: <span class="tok-str">"One-line trigger condition goes here"</span>
 <span class="tok-kw">scope</span>: read-only</code></pre>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-efficiency" role="tabpanel" tabindex="0" aria-labelledby="tab-efficiency" hidden>
+        <h2>Token Efficiency</h2>
+        <p class="placeholder">
+          Placeholder — why token efficiency is a design constraint, not an afterthought, once a
+          system runs at real usage volume.
+        </p>
+
+        <h3>Techniques</h3>
+        <table>
+          <thead><tr><th>Technique</th><th>Lever</th></tr></thead>
+          <tbody>
+            <tr><td>Prompt caching</td><td>Reuse unchanged context across calls</td></tr>
+            <tr><td>Right-sized model routing</td><td>Cheap model for easy steps, strong model for hard ones</td></tr>
+            <tr><td>Progressive disclosure in skills</td><td>Only load detail when the task needs it</td></tr>
+            <tr><td>Summarization / compaction</td><td>Compress history instead of carrying it verbatim</td></tr>
+          </tbody>
+        </table>
+        <p class="placeholder">Placeholder — elaborate each technique with real examples once learned.</p>
+
+        <h3>Cost Math</h3>
+        <p class="placeholder">Placeholder — worked example comparing cost of a naive vs. optimized approach.</p>
+        <div class="terminal">
+          <div class="line">echo "cost = (input_tokens + output_tokens) * rate"</div>
+          <div class="out">placeholder — swap in a real before/after calculation</div>
         </div>
       </section>
 
