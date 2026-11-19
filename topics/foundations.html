@@ -53,8 +53,8 @@
           LLMs are fundamentally neural networks designed to predict the next token in
           a sequence. Tokens, as the building blocks, can be letters, a cluster of letters, or
           even a whole word. Under the hood, LLMs convert user inputs into tokens using a
-          fixed vocabulary bank `(e.g., "Through thick and" \-\-> ["Th" + "rough", "thick", "and"])`, and the output is a probability distribution for which token
-          is likely to appear next `(e.g., ["thin" = 0.8, "thicker" = 0.1, "and" = 0.1])`.
+          fixed vocabulary bank (e.g., "Through thick and" --> ['Th' + 'rough' + 'thick' + 'and']), and the output is a probability distribution for which token
+          is likely to appear next (e.g., ['thin' = 0.8, 'thicker' = 0.2]).
         </p>
         <p>
           There are billions of node connections in these neural networks, and each input token
@@ -87,14 +87,14 @@
             </style>
 
             <g class="cmlnode"><rect x="10" y="10" width="170" height="40" rx="6"></rect><text x="95" y="35">System Prompt</text></g>
-            <g class="cmlnode"><rect x="235" y="10" width="170" height="40" rx="6"></rect><text x="320" y="35">Chat History</text></g>
+            <g class="cmlnode"><rect x="235" y="10" width="170" height="40" rx="6"></rect><text x="320" y="35">Conversation History</text></g>
             <g class="cmlnode"><rect x="460" y="10" width="170" height="40" rx="6"></rect><text x="545" y="35">New Input</text></g>
 
             <path class="cmledge" d="M95,50 C95,72 260,72 260,90"></path>
             <path class="cmledge" d="M320,50 L320,90"></path>
             <path class="cmledge" d="M545,50 C545,72 380,72 380,90"></path>
 
-            <g class="cmlnode"><rect x="235" y="90" width="170" height="40" rx="6"></rect><text x="320" y="115">Prompt</text></g>
+            <g class="cmlnode"><rect x="235" y="90" width="170" height="40" rx="6"></rect><text x="320" y="115">Context</text></g>
             <path class="cmledge" d="M320,130 L320,170"></path>
 
             <g class="cmlnode"><rect x="235" y="170" width="170" height="40" rx="6"></rect><text x="320" y="195">Tokens</text></g>
@@ -111,7 +111,7 @@
             <path class="cmlloop" d="M235,450 C120,450 85,420 85,315"></path>
             <g class="cmlnode cache"><rect x="20" y="270" width="130" height="40" rx="6"></rect><text x="85" y="295">Cached</text></g>
             <path class="cmlloop" d="M85,270 C85,215 150,190 235,190"></path>
-            <text class="cmllabel" x="100" y="380" transform="rotate(-90 100 380)">repeated one token at a time</text>
+            <text class="cmllabel" x="100" y="195" transform="rotate(-25 100 380)">repeated one token at a time</text>
           </svg>
           <figcaption>Every generation step reprocesses the full prompt — system prompt, chat history, and new
             input — down through to a single selected token, which is cached and fed back in to produce
