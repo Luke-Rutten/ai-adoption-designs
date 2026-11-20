@@ -583,11 +583,37 @@
 
       <section class="tab-panel" id="panel-middleware" role="tabpanel" tabindex="0" aria-labelledby="tab-middleware" hidden>
         <h2>Middleware</h2>
-        <p class="placeholder">
-          Placeholder — hooks, guardrails, and pre/post-processing that wrap the model call:
-          validation, logging, redaction, and policy enforcement that shouldn't live inside the
-          prompt itself.
+
+        <p>
+          A plain prompt-response loop doesn't give a business everything it needs. Security,
+          business logic, telemetry, guardrails, policy enforcement, exception handling — all of
+          this is stuff an organization needs handled reliably, and a probabilistic LLM is exactly
+          the wrong thing to trust with handling it. Middleware is the processes wrapped around
+          the agentic experience that cover that gap: it adds back the determinism and the
+          coverage that a simple model call, on its own, doesn't provide.
         </p>
+
+        <p>Middleware broadly shows up at two points:</p>
+        <ul>
+          <li><strong>Agent middleware:</strong> inspects messages going into or out of an agent,
+          and can remove or adjust pieces of them as needed — stripping something sensitive,
+          rewriting a response, logging what happened.</li>
+          <li><strong>Tool middleware:</strong> validates a tool call's inputs and outputs —
+          security checks, compliance checks — before or after the tool actually runs.</li>
+        </ul>
+
+        <p>
+          Middleware can be implemented as hooks, as custom scripts, or as third-party
+          software-as-a-service products. It can be scoped narrowly — tied to one specific agent,
+          skill, or tool — or applied broadly at the organizational level, covering everything
+          that runs underneath it.
+        </p>
+
+        <div class="callout warn">
+          <p><strong>Key implication:</strong> middleware isn't free — every check it runs adds
+          latency to the user's request. The more middleware wraps a given call, the longer that
+          call takes to come back.</p>
+        </div>
       </section>
 
       <section class="tab-panel" id="panel-context" role="tabpanel" tabindex="0" aria-labelledby="tab-context" hidden>
