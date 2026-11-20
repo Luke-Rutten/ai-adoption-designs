@@ -421,10 +421,65 @@
 
       <section class="tab-panel" id="panel-mcps" role="tabpanel" tabindex="0" aria-labelledby="tab-mcps" hidden>
         <h2>MCPs</h2>
+
+        <p>
+          MCP stands for Model Context Protocol. It exists to standardize how models connect to
+          external services, so that connection and maintenance work doesn't have to be
+          duplicated. Without it, every LLM-facing harness (Claude Code, Cursor, …) that wants to
+          talk to every external service (GitHub, Google Drive, …) would need its own bespoke
+          integration — an N×M problem. MCP collapses that: one MCP server gets built for a given
+          service, and any MCP-compatible client can connect to it the same standardized way.
+          Re-implementation drops out, and ongoing maintenance stays in one place.
+        </p>
+
+        <p>MCP follows a host–client–server architecture:</p>
         <p class="placeholder">
-          Placeholder — Model Context Protocol as a standard way to expose tools and resources to
-          any compatible client, instead of writing bespoke integrations per agent. Tradeoffs
-          versus a one-off tool.
+          Placeholder diagram — host (the application, e.g. Claude Code), client (the connector
+          inside the host that speaks MCP), and server (the external integration), with the
+          server running either locally on the same machine or remotely over the network.
+        </p>
+
+        <p>
+          An MCP server is, underneath it all, just code — written against an MCP SDK, running
+          locally or in the cloud. That means a developer can put whatever else they want in
+          front of the actual integration logic, and in practice the server often ends up acting
+          as middleware: logging, security checks, authentication, input validation, all of it
+          can sit inside the server before a request ever reaches the thing it's integrating
+          with.
+        </p>
+
+        <p>An MCP server can expose three kinds of things to an LLM: tools, resources, and prompts.</p>
+
+        <h3>Tools</h3>
+        <p>
+          MCP tools work like any other tool — they get loaded into the context window
+          automatically once the connection handshake completes, the same as a tool installed
+          locally. The one wrinkle is scale: if a server exposes so many tools that they'd eat up
+          too much context, they get hidden behind a tool-search tool instead. That search tool
+          uses pattern matching to dynamically pull in just the names and descriptions of
+          whichever tools actually look relevant, only once the model decides it needs something
+          it doesn't currently have loaded.
+        </p>
+
+        <h3>Resources</h3>
+        <p>
+          Resources are pieces of context made available on demand — read with a resource-read
+          tool, or discovered with a resource-list tool. By default, a resource itself isn't
+          loaded into context automatically the way a tool description is; the LLM only sees the
+          read and list tools, and has to decide to go use them before a given resource's content
+          ever shows up in context.
+        </p>
+
+        <h3>Prompts</h3>
+        <p>
+          Prompts are pre-built prompt templates the MCP server offers, but unlike tools and
+          resources, they're user-activated rather than model-activated. When a user wants to use
+          one, and the harness supports MCP prompts (most common ones do), it surfaces some kind
+          of menu — options, fields, questions — for the user to fill in. Once the user has
+          answered, those question-and-answer pairs get inserted into the context window as if
+          the user had just typed them out directly. It's a way of structuring exactly what
+          information a user needs to supply, without the model having to infer or request it
+          turn by turn.
         </p>
       </section>
 
