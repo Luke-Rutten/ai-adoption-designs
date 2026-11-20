@@ -433,11 +433,53 @@
         </p>
 
         <p>MCP follows a host–client–server architecture:</p>
-        <p class="placeholder">
-          Placeholder diagram — host (the application, e.g. Claude Code), client (the connector
-          inside the host that speaks MCP), and server (the external integration), with the
-          server running either locally on the same machine or remotely over the network.
-        </p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 640 420" role="img" aria-labelledby="mcp-diagram-title">
+            <title id="mcp-diagram-title">MCP host–client–server architecture: the host app contains one MCP client per MCP server, each client connecting to its own server, which in turn connects to its own external service</title>
+            <defs>
+              <marker id="mcparrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L8,3 L0,6 Z" fill="var(--text-dim)"></path>
+              </marker>
+            </defs>
+            <style>
+              .mcpnode rect { fill: var(--bg-raised); stroke: var(--border); stroke-width: 1; }
+              .mcpnode text { fill: var(--text); font-family: var(--mono); font-size: 12px; text-anchor: middle; }
+              .mcphost rect { fill: none; stroke: var(--accent-dim); stroke-dasharray: 4 3; }
+              .mcphost text { fill: var(--text-faint); font-family: var(--mono); font-size: 11px; text-anchor: start; }
+              .mcpedge { stroke: var(--text-dim); stroke-width: 1.5; fill: none; marker-start: url(#mcparrow); marker-end: url(#mcparrow); }
+              .mcplabel { fill: var(--text-faint); font-family: var(--mono); font-size: 10px; text-anchor: middle; }
+            </style>
+
+            <g class="mcphost"><rect x="10" y="10" width="190" height="400" rx="6"></rect><text x="24" y="30">MCP Host (e.g. Claude Code)</text></g>
+            <g class="mcpnode"><rect x="35" y="45" width="140" height="50" rx="6"></rect><text x="105" y="74">MCP Client</text></g>
+            <g class="mcpnode"><rect x="35" y="185" width="140" height="50" rx="6"></rect><text x="105" y="214">MCP Client</text></g>
+            <g class="mcpnode"><rect x="35" y="325" width="140" height="50" rx="6"></rect><text x="105" y="354">MCP Client</text></g>
+
+            <path class="mcpedge" d="M175,70 L400,70"></path>
+            <text class="mcplabel" x="290" y="60">MCP</text>
+            <path class="mcpedge" d="M175,210 L400,210"></path>
+            <text class="mcplabel" x="290" y="200">MCP</text>
+            <path class="mcpedge" d="M175,350 L400,350"></path>
+            <text class="mcplabel" x="290" y="340">MCP</text>
+
+            <g class="mcpnode"><rect x="400" y="45" width="130" height="50" rx="6"></rect><text x="465" y="74">MCP Server A</text></g>
+            <g class="mcpnode"><rect x="400" y="185" width="130" height="50" rx="6"></rect><text x="465" y="214">MCP Server B</text></g>
+            <g class="mcpnode"><rect x="400" y="325" width="130" height="50" rx="6"></rect><text x="465" y="354">MCP Server C</text></g>
+
+            <path class="mcpedge" d="M530,70 L600,70"></path>
+            <path class="mcpedge" d="M530,210 L600,210"></path>
+            <path class="mcpedge" d="M530,350 L600,350"></path>
+
+            <g class="mcpnode"><rect x="600" y="45" width="30" height="50" rx="6"></rect><text x="615" y="68" font-size="9">API</text><text x="615" y="80" font-size="9">A</text></g>
+            <g class="mcpnode"><rect x="600" y="185" width="30" height="50" rx="6"></rect><text x="615" y="208" font-size="9">API</text><text x="615" y="220" font-size="9">B</text></g>
+            <g class="mcpnode"><rect x="600" y="325" width="30" height="50" rx="6"></rect><text x="615" y="348" font-size="9">API</text><text x="615" y="360" font-size="9">C</text></g>
+          </svg>
+          <figcaption>
+            The host runs one MCP client per server it connects to; each client speaks MCP to its
+            own server, and each server wraps its own external service, local or remote.
+          </figcaption>
+        </figure>
 
         <p>
           An MCP server is, underneath it all, just code — written against an MCP SDK, running
