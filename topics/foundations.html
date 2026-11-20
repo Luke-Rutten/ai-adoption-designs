@@ -527,11 +527,58 @@
 
       <section class="tab-panel" id="panel-workflows" role="tabpanel" tabindex="0" aria-labelledby="tab-workflows" hidden>
         <h2>Workflows</h2>
-        <p class="placeholder">
-          Placeholder — deterministic, multi-step chains versus a freeform agent loop: when a
-          fixed sequence of steps is more reliable (and cheaper) than letting the model decide
-          the order itself.
+
+        <p>
+          Real processes often need both determinism and flexibility, at different points.
+          LLMs alone don't handle determinism well — ask the same thing twice and you can get two
+          different answers. Deterministic systems alone don't handle flexibility well — they
+          only do exactly what they were coded to do. A workflow is what lets a single process
+          lean on determinism where it needs reliability, and lean on an agentic, flexible step
+          where it needs judgment — within the same pipeline.
         </p>
+
+        <p>
+          Each step in a workflow needs something to actually do the work, and often something
+          else to check that work before it moves on — an executor and an approver. Either role,
+          at any given step, can be filled by an LLM, by plain code, or by a human, and each
+          choice trades off differently:
+        </p>
+        <p class="placeholder">Placeholder — fill in as the trade-offs get sharper, e.g.:</p>
+        <table>
+          <thead><tr><th>Executor / approver</th><th>Good for</th><th>Trade-off</th></tr></thead>
+          <tbody>
+            <tr><td>LLM</td><td>Judgment calls, unstructured input, cases that don't fit a fixed rule</td><td>Non-deterministic, costs tokens, can be wrong confidently</td></tr>
+            <tr><td>Code</td><td>Anything with a clear, fixed rule — validation, formatting, routing</td><td>Rigid; only handles the cases it was written for</td></tr>
+            <tr><td>Human</td><td>High-stakes or ambiguous decisions, final sign-off</td><td>Slow, doesn't scale, blocks the pipeline until they respond</td></tr>
+          </tbody>
+        </table>
+
+        <p>Workflows tend to follow a handful of recurring patterns:</p>
+        <ul>
+          <li><strong>Sequential:</strong> steps run one after another, in a fixed order.</li>
+          <li><strong>Concurrent:</strong> multiple steps run at the same time, independently of
+          each other.</li>
+          <li><strong>Handoff:</strong> steps still run one after another, but which step comes
+          next depends on the task — the order itself isn't fixed.</li>
+          <li><strong>Coordination:</strong> multiple agents collaborate synchronously toward one
+          shared recommendation or output.</li>
+          <li><strong>Evaluator-optimizer loop:</strong> a step's output gets evaluated against
+          some criteria, and redone if it doesn't pass, looping until it does.</li>
+          <li><strong>Human-in-the-loop checkpoint:</strong> the process pauses entirely and
+          waits for a human to approve before it continues.</li>
+        </ul>
+
+        <p>
+          These patterns are often just implemented directly in code. There are also workflow
+          orchestrators — LangGraph, for example — that provide a lot of this structure (steps,
+          branching, loops, state) out of the box, rather than building it from scratch.
+        </p>
+
+        <div class="callout warn">
+          <p><strong>Key implication:</strong> almost any loop in a workflow — an
+          evaluator-optimizer loop especially — needs a hard cap on iterations. Without one, a
+          step that never quite satisfies its own evaluation criteria will simply loop forever.</p>
+        </div>
       </section>
 
       <section class="tab-panel" id="panel-middleware" role="tabpanel" tabindex="0" aria-labelledby="tab-middleware" hidden>
